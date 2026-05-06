@@ -1,17 +1,17 @@
-import os
-import pandas as pd
-import matplotlib.pyplot as plt
+#import os
+#import pandas as pd
+#import matplotlib.pyplot as plt
 #from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report
-from xgboost import XGBClassifier
+#from sklearn.metrics import classification_report
+#from xgboost import XGBClassifier
 import joblib as jb
-from sklearn.metrics import confusion_matrix
+#from sklearn.metrics import confusion_matrix
 
-def simple_load_csv(base_path):
-    """
+"""def simple_load_csv(base_path):
+    ""
     Load all CSV files from a directory (including subfolders)
     and merge them into a single DataFrame.
-    """
+    ""
     
     all_dfs = []
 
@@ -33,15 +33,15 @@ def simple_load_csv(base_path):
     if not all_dfs:
         return pd.DataFrame()
 
-    return pd.concat(all_dfs, ignore_index=True)
-def split_csv(df, split_ratio=0.7):
+    return pd.concat(all_dfs, ignore_index=True)"""
+"""def split_csv(df, split_ratio=0.7):
     split_idx = int(len(df) * split_ratio)
     
     train = df.iloc[:split_idx]
     test  = df.iloc[split_idx:]
     
-    return train, test
-def load_csv_file(file_path,label):
+    return train, test"""
+"""def load_csv_file(file_path,label):
     print(f"Loading {file_path}...")
     try:
         df = pd.read_csv(file_path).drop_duplicates()
@@ -51,12 +51,12 @@ def load_csv_file(file_path,label):
 
     except Exception as e:
         print(f"Failed to read {file_path}: {e}")
-        return pd.DataFrame(), pd.DataFrame()
-def load_csv_folder(base_path,label):
-    """
+        return pd.DataFrame(), pd.DataFrame()"""
+"""def load_csv_folder(base_path,label):
+    ""
     Load all CSV files from a directory (including subfolders)
     and merge them into a single DataFrame.
-    """
+    ""
     train_list = []
     test_list = []
     all_dfs = []
@@ -69,8 +69,8 @@ def load_csv_folder(base_path,label):
                 train_list.append(train)
                 test_list.append(test)
 
-    return train_list, test_list
-def preprocess(devices):
+    return train_list, test_list"""
+"""def preprocess(devices):
     train_all = []
     test_all = []
     # Load and preprocess data for the device
@@ -85,8 +85,8 @@ def preprocess(devices):
         test_all.append(test_device)
     train_df = pd.concat(train_all, ignore_index=True)
     test_df  = pd.concat(test_all, ignore_index=True)
-    return train_df, test_df
-def train_on_devices(devices_data):
+    return train_df, test_df"""
+"""def train_on_devices(devices_data):
     # Train the model
     train , test = devices_data
     x_train = train.drop("label", axis=1)
@@ -128,7 +128,7 @@ def test_on_device(model,device_name):
     y_pred = model.predict(x)
 
     print(f"Results for {device_name}:")
-    print(classification_report(y, y_pred))
+    print(classification_report(y, y_pred))"""
 
 def load_model(model_path):
     return jb.load(model_path)
