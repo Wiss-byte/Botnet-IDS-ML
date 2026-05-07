@@ -16,6 +16,7 @@ buffer_lock = threading.Lock()
 BATCH_INTERVAL = 10  # seconds
 PORT = 1883
 N8N_WEBHOOK_URL = "http://localhost:5678/webhook/ids-alert"
+DJANGO_ALERT_URL = "http://127.0.0.1:8000/api/alert/"
 
 # ==== FEATURE EXTRACTOR ====
 def process(packets):
@@ -38,10 +39,23 @@ def send_alert(attack_count, total_packets):
             "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
             "severity": "HIGH" if attack_count > 100 else "MEDIUM"
         }
-        response = requests.post(N8N_WEBHOOK_URL, json=payload, timeout=5)
-        print(f"[ALERT] Sent to n8n → status {response.status_code}")
+
+        # Envoyer à n8n (email)
+        try:
+            response = requests.post(N8N_WEBHOOK_URL, json=payload, timeout=5)
+            print(f"[ALERT] n8n → status {response.status_code}")
+        except Exception as e:
+            print(f"[ALERT] n8n failed: {e}")
+
+        # Envoyer au Dashboard Django
+        try:
+            response = requests.post(DJANGO_ALERT_URL, json=payload, timeout=5)
+            print(f"[ALERT] Dashboard → status {response.status_code}")
+        except Exception as e:
+            print(f"[ALERT] Dashboard failed: {e}")
+
     except Exception as e:
-        print(f"[ALERT] Failed to send to n8n: {e}")
+        print(f"[ALERT] Error: {e}")
 
 # ==== PACKET HANDLER ====
 def packet_callback(pkt):
